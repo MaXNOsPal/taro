@@ -7,91 +7,133 @@
 <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;500;600&family=Cinzel:wght@500;600&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{
-  font-family:'Prompt',sans-serif;
+:root{--cw:108px;--ch:186px;--orig:400px}
+body{font-family:'Prompt',sans-serif;
   background:radial-gradient(ellipse at top,#1e1348,#09061a 60%);
-  color:#efe9ff;min-height:100vh;padding:32px 16px 60px;
-  display:flex;flex-direction:column;align-items:center;
-}
+  color:#efe9ff;min-height:100vh;padding:28px 14px 60px;
+  display:flex;flex-direction:column;align-items:center;overflow-x:hidden}
 h1{font-family:'Cinzel',serif;font-size:30px;letter-spacing:2px;
   background:linear-gradient(#ffe9a8,#d4a03c);-webkit-background-clip:text;
   background-clip:text;color:transparent}
-.sub{font-size:13px;color:#9a8fc4;margin:6px 0 26px}
+.sub{font-size:13px;color:#9a8fc4;margin:6px 0 22px}
 
 /* ---------- ปุ่ม ---------- */
-.bar{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:30px}
-button{
-  font-family:'Prompt',sans-serif;font-size:14px;cursor:pointer;
+.bar{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:22px}
+button{font-family:'Prompt',sans-serif;font-size:14px;cursor:pointer;
   padding:11px 24px;border-radius:30px;border:1px solid #6a52b8;
-  background:rgba(106,82,184,.18);color:#e6dcff;transition:.25s;
-}
+  background:rgba(106,82,184,.18);color:#e6dcff;transition:.25s}
 button:hover{background:rgba(106,82,184,.45);transform:translateY(-2px)}
 button.on{background:linear-gradient(135deg,#d4a03c,#f0d089);color:#22143f;
   border-color:#f0d089;font-weight:600}
 
-/* ---------- ไพ่ ---------- */
-.table{display:flex;gap:22px;flex-wrap:wrap;justify-content:center;margin-bottom:34px}
-.slot{width:180px;display:flex;flex-direction:column;align-items:center;gap:10px}
+/* ---------- ช่องวางไพ่ ---------- */
+.table{display:flex;gap:18px;flex-wrap:wrap;justify-content:center;
+  margin-bottom:26px;min-height:10px}
+.slot{width:150px;display:flex;flex-direction:column;align-items:center;gap:8px}
 .pos{font-size:12px;color:#c9a84c;letter-spacing:1px;height:16px}
-.card{width:180px;height:309px;perspective:1100px;cursor:pointer}
-.inner{position:relative;width:100%;height:100%;transform-style:preserve-3d;
-  transition:transform .7s cubic-bezier(.4,.2,.2,1)}
-.card.flip .inner{transform:rotateY(180deg)}
-.face{position:absolute;inset:0;backface-visibility:hidden;
-  border-radius:12px;overflow:hidden;border:1px solid #4a3a86;
-  box-shadow:0 10px 30px rgba(0,0,0,.55)}
+.ph{width:150px;height:258px;border:1px dashed #4a3a86;border-radius:12px;
+  background:rgba(255,255,255,.02);display:flex;align-items:center;
+  justify-content:center;color:#3d3070;font-size:30px}
 
-/* หลังไพ่ */
+/* ---------- การ์ดในช่อง (พลิกได้) ---------- */
+.card{width:150px;height:258px;perspective:1100px}
+.inner{position:relative;width:100%;height:100%;transform-style:preserve-3d;
+  transition:transform .75s cubic-bezier(.4,.2,.2,1)}
+.card.flip .inner{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;border-radius:12px;
+  overflow:hidden;border:1px solid #4a3a86;box-shadow:0 10px 30px rgba(0,0,0,.55)}
 .bk{background:
   repeating-linear-gradient(45deg,rgba(212,160,60,.14) 0 8px,transparent 8px 16px),
   linear-gradient(160deg,#2b1c5c,#150c33);
   display:flex;align-items:center;justify-content:center}
-.bk span{font-size:44px;color:#d4a03c;opacity:.85}
-
-/* หน้าไพ่ */
-.front{transform:rotateY(180deg);background:#160d33;display:block}
-.front .art{width:100%;height:100%;object-fit:cover;display:block;
-  transition:transform .5s ease}
+.bk span{font-size:38px;color:#d4a03c;opacity:.85}
+.front{transform:rotateY(180deg);background:#160d33}
+.front .art{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s}
 .front.rev .art{transform:rotate(180deg)}
-.front .caption{position:absolute;left:0;right:0;bottom:0;padding:34px 8px 12px;
-  text-align:center;
-  background:linear-gradient(transparent,rgba(9,6,26,.6) 40%,rgba(9,6,26,.96))}
-.front .en{font-family:'Cinzel',serif;font-size:15px;color:#ffe9a8}
-.front .th{font-size:12px;color:#c9bcff;margin-top:1px}
-.tag{display:inline-block;margin-top:6px;font-size:10px;padding:2px 10px;
-  border-radius:20px;background:rgba(120,220,160,.16);color:#8fe0b0}
+.front .caption{position:absolute;left:0;right:0;bottom:0;padding:30px 6px 10px;
+  text-align:center;background:linear-gradient(transparent,rgba(9,6,26,.6) 40%,rgba(9,6,26,.96))}
+.front .en{font-family:'Cinzel',serif;font-size:14px;color:#ffe9a8}
+.front .th{font-size:11px;color:#c9bcff}
+.tag{display:inline-block;margin-top:5px;font-size:10px;padding:2px 9px;border-radius:20px;
+  background:rgba(120,220,160,.16);color:#8fe0b0}
 .tag.rv{background:rgba(255,120,140,.16);color:#ff9db0}
-/* กรณีไม่มีไฟล์รูป */
 .noimg{width:100%;height:100%;display:flex;align-items:center;justify-content:center;
-  font-family:'Cinzel',serif;font-size:52px;color:#d4a03c;
+  font-family:'Cinzel',serif;font-size:46px;color:#d4a03c;
   background:linear-gradient(160deg,#2b1c5c,#150c33)}
+.drop{animation:drop .45s ease-out}
+@keyframes drop{from{opacity:0;transform:translateY(-24px) scale(.94)}to{opacity:1}}
+
+/* ---------- พัดไพ่ ---------- */
+.fanwrap{width:100%;max-width:900px;transition:.5s}
+.fanwrap.hide{opacity:0;transform:translateY(40px) scale(.9);pointer-events:none;
+  height:0;overflow:hidden;margin:0}
+.fan{position:relative;height:250px;margin:6px 0 10px}
+.fcard{position:absolute;left:50%;top:0;width:var(--cw);height:var(--ch);
+  transform-origin:50% var(--orig);border-radius:9px;cursor:pointer;
+  border:1px solid #57429c;box-shadow:0 6px 18px rgba(0,0,0,.5);
+  background:repeating-linear-gradient(45deg,rgba(212,160,60,.13) 0 7px,transparent 7px 14px),
+    linear-gradient(160deg,#2b1c5c,#150c33);
+  display:flex;align-items:center;justify-content:center;
+  color:#d4a03c;font-size:24px;opacity:.92;
+  transform:translateX(-50%) rotate(var(--a));
+  transition:transform .28s ease,opacity .3s,box-shadow .28s;
+  animation:fanin .5s backwards}
+@keyframes fanin{
+  from{opacity:0;transform:translateX(-50%) rotate(0deg) translateY(220px)}
+  to{opacity:.92;transform:translateX(-50%) rotate(var(--a))}}
+.fcard:hover{opacity:1;box-shadow:0 12px 26px rgba(212,160,60,.4);
+  transform:translateX(-50%) rotate(var(--a)) translateY(-28px)}
+.fcard.taken{opacity:0;pointer-events:none;
+  transform:translateX(-50%) rotate(var(--a)) translateY(-60px) scale(.85)}
+.counter{text-align:center;font-size:13px;color:#c9a84c;letter-spacing:1px;margin-bottom:4px}
+
+/* การ์ดผีที่บินไปลงช่อง */
+.ghost{position:fixed;z-index:99;border-radius:10px;pointer-events:none;
+  border:1px solid #57429c;box-shadow:0 14px 34px rgba(0,0,0,.6);
+  background:repeating-linear-gradient(45deg,rgba(212,160,60,.13) 0 7px,transparent 7px 14px),
+    linear-gradient(160deg,#2b1c5c,#150c33);
+  transition:all .6s cubic-bezier(.45,.05,.25,1)}
 
 /* ---------- คำทำนาย ---------- */
-.result{max-width:720px;width:100%;display:flex;flex-direction:column;gap:14px}
+.result{max-width:720px;width:100%;display:flex;flex-direction:column;gap:14px;margin-top:8px}
 .item{background:rgba(255,255,255,.045);border:1px solid #392a70;
-  border-left:3px solid #d4a03c;border-radius:12px;padding:16px 18px;
+  border-left:3px solid #d4a03c;border-radius:12px;padding:15px 17px;
   opacity:0;transform:translateY(14px);animation:up .5s forwards}
 @keyframes up{to{opacity:1;transform:none}}
-.item h3{font-family:'Cinzel',serif;font-size:16px;color:#ffe9a8;margin-bottom:2px}
-.item .m{font-size:12px;color:#9a8fc4;margin-bottom:9px}
+.item h3{font-family:'Cinzel',serif;font-size:16px;color:#ffe9a8}
+.item .m{font-size:12px;color:#9a8fc4;margin-bottom:8px}
 .item p{font-size:14px;line-height:1.75;color:#ded6ff}
 .hint{font-size:12px;color:#7e73ad;margin-top:14px;text-align:center}
+
+@media(max-width:640px){
+  :root{--cw:74px;--ch:127px;--orig:300px}
+  .fan{height:180px}
+  .slot,.ph,.card{width:130px}
+  .ph,.card{height:224px}
+  .table{gap:10px}
+}
 </style>
 </head>
 <body>
 
 <h1>TAROT</h1>
-<div class="sub">Major Arcana · ไพ่ชุดใหญ่ 22 ใบ</div>
+<div class="sub">Major Arcana · เลือกไพ่ด้วยใจของคุณ</div>
 
 <div class="bar">
   <button id="b1" class="on">ไพ่ 1 ใบ</button>
   <button id="b3">ไพ่ 3 ใบ</button>
-  <button id="draw">🔮 สับไพ่</button>
+  <button id="draw">🔮 สับไพ่ใหม่</button>
 </div>
 
 <div class="table" id="table"></div>
+
+<div class="fanwrap" id="fanwrap">
+  <div class="counter" id="counter"></div>
+  <div class="fan" id="fan"></div>
+</div>
+
 <div class="result" id="result"></div>
-<div class="hint" id="hint">เลือกจำนวนไพ่ แล้วกด “สับไพ่”</div>
+<div class="hint" id="hint">กด “สับไพ่ใหม่” เพื่อเริ่ม</div>
 
 <script>
 /* ===================== ข้อมูลไพ่ ===================== */
@@ -119,86 +161,147 @@ const DECK=[
 {en:"Judgement",th:"การพิพากษา",up:"เสียงเรียกให้ตื่นขึ้น ทบทวนอดีตแล้วเลือกทางใหม่ด้วยความเข้าใจ",rev:"ตัดสินตัวเองรุนแรง หรือหลบเลี่ยงบทเรียนที่ควรเรียนรู้"},
 {en:"The World",th:"โลก",up:"วงจรสมบูรณ์ ความสำเร็จเต็มรูปแบบ พร้อมเปิดบทใหม่",rev:"ใกล้ถึงแล้วแต่ยังไม่จบ เหลืออีกนิดต้องเก็บให้ครบ"}
 ];
-
-/* เติม path รูปอัตโนมัติ: cards/00.jpg … cards/21.jpg */
 DECK.forEach((c,i)=> c.img = `cards/${String(i).padStart(2,'0')}.jpg`);
-DECK.forEach(c=>{ const im=new Image(); im.src=c.img; });   // preload
+DECK.forEach(c=>{ const im=new Image(); im.src=c.img; });
 
 /* ===================== ตัวแปร ===================== */
 const POS3=["อดีต","ปัจจุบัน","อนาคต"];
-let count=1, drawn=[];
+const SPREAD=112;          // องศารวมของพัด
+const REV_RATE=0.4;        // โอกาสไพ่กลับหัว
 const $=id=>document.getElementById(id);
+let count=1, pool=[], picks=[], busy=false;
 
 /* ===================== ปุ่ม ===================== */
-$('b1').onclick=()=>setMode(1);
-$('b3').onclick=()=>setMode(3);
-$('draw').onclick=deal;
-
-function setMode(n){
-  count=n;
-  $('b1').classList.toggle('on',n===1);
-  $('b3').classList.toggle('on',n===3);
-  reset();
-}
-function reset(){
-  $('table').innerHTML=''; $('result').innerHTML='';
-  $('hint').textContent='เลือกจำนวนไพ่ แล้วกด “สับไพ่”';
+$('b1').onclick=()=>{count=1;mode();};
+$('b3').onclick=()=>{count=3;mode();};
+$('draw').onclick=start;
+function mode(){
+  $('b1').classList.toggle('on',count===1);
+  $('b3').classList.toggle('on',count===3);
+  start();
 }
 
-/* ===================== แจกไพ่ ===================== */
-function deal(){
-  reset();
-  const pool=[...DECK];
-  for(let i=pool.length-1;i>0;i--){                  // Fisher-Yates
+/* ===================== เริ่มรอบใหม่ ===================== */
+function start(){
+  busy=false; picks=[];
+  $('result').innerHTML='';
+  $('fanwrap').classList.remove('hide');
+
+  // สับไพ่ Fisher-Yates + สุ่มหัวกลับล่วงหน้า
+  pool=[...DECK];
+  for(let i=pool.length-1;i>0;i--){
     const j=Math.floor(Math.random()*(i+1));
     [pool[i],pool[j]]=[pool[j],pool[i]];
   }
-  drawn=pool.slice(0,count).map(c=>({...c,rev:Math.random()<0.4}));
+  pool=pool.map(c=>({...c,isRev:Math.random()<REV_RATE}));
 
-  drawn.forEach((c,i)=>{
-    const slot=document.createElement('div');
-    slot.className='slot';
-    slot.innerHTML=`
-      <div class="pos">${count===3?POS3[i]:''}</div>
-      <div class="card" data-i="${i}">
-        <div class="inner">
-          <div class="face bk"><span>✦</span></div>
-          <div class="face front ${c.rev?'rev':''}">
-            <img class="art" src="${c.img}" alt="${c.en}"
-                 onerror="this.outerHTML='<div class=\\'noimg\\'>${i}</div>'">
-            <div class="caption">
-              <div class="en">${c.en}</div>
-              <div class="th">${c.th}</div>
-              <div class="tag ${c.rev?'rv':''}">${c.rev?'กลับหัว':'ตั้งตรง'}</div>
-            </div>
+  // ช่องว่างรอไพ่
+  $('table').innerHTML='';
+  for(let i=0;i<count;i++){
+    const s=document.createElement('div');
+    s.className='slot'; s.id='slot'+i;
+    s.innerHTML=`<div class="pos">${count===3?POS3[i]:''}</div>
+                 <div class="ph">?</div>`;
+    $('table').appendChild(s);
+  }
+
+  // กางพัด
+  const fan=$('fan'); fan.innerHTML='';
+  const n=DECK.length, step=SPREAD/(n-1);
+  pool.forEach((c,i)=>{
+    const a=(-SPREAD/2+step*i).toFixed(2);
+    const d=document.createElement('div');
+    d.className='fcard';
+    d.style.setProperty('--a',a+'deg');
+    d.style.animationDelay=(i*32)+'ms';
+    d.style.zIndex=i;
+    d.textContent='✦';
+    d.onclick=()=>pick(d,i);
+    fan.appendChild(d);
+  });
+
+  updateCounter();
+  $('hint').textContent='แตะไพ่ในพัดเพื่อเลือก';
+}
+
+function updateCounter(){
+  $('counter').textContent=`เลือกแล้ว ${picks.length} / ${count} ใบ`;
+}
+
+/* ===================== เลือกไพ่ ===================== */
+function pick(el,i){
+  if(busy||picks.length>=count||el.classList.contains('taken'))return;
+  const slot=$('slot'+picks.length).querySelector('.ph');
+  const card=pool[i];
+  picks.push(card);
+  const idx=picks.length-1;
+  el.classList.add('taken');
+
+  fly(el,slot,()=>{
+    place(idx,card);
+    updateCounter();
+    if(picks.length===count){
+      busy=true;
+      $('hint').textContent='กำลังเปิดไพ่...';
+      setTimeout(()=>{ $('fanwrap').classList.add('hide'); revealAll(); },500);
+    }
+  });
+  updateCounter();
+}
+
+/* การ์ดบินจากพัดไปลงช่อง */
+function fly(from,to,cb){
+  const a=from.getBoundingClientRect(), b=to.getBoundingClientRect();
+  const g=document.createElement('div');
+  g.className='ghost';
+  g.style.cssText+=`left:${a.left}px;top:${a.top}px;width:${a.width}px;height:${a.height}px;`;
+  document.body.appendChild(g);
+  requestAnimationFrame(()=>{
+    g.style.left=b.left+'px'; g.style.top=b.top+'px';
+    g.style.width=b.width+'px'; g.style.height=b.height+'px';
+  });
+  setTimeout(()=>{g.remove();cb();},620);
+}
+
+/* วางไพ่ลงช่อง (ยังคว่ำอยู่) */
+function place(i,c){
+  const slot=$('slot'+i);
+  slot.querySelector('.ph').outerHTML=`
+    <div class="card drop" id="card${i}">
+      <div class="inner">
+        <div class="face bk"><span>✦</span></div>
+        <div class="face front ${c.isRev?'rev':''}">
+          <img class="art" src="${c.img}" alt="${c.en}"
+               onerror="this.outerHTML='<div class=\\'noimg\\'>✦</div>'">
+          <div class="caption">
+            <div class="en">${c.en}</div>
+            <div class="th">${c.th}</div>
+            <div class="tag ${c.isRev?'rv':''}">${c.isRev?'กลับหัว':'ตั้งตรง'}</div>
           </div>
         </div>
-      </div>`;
-    slot.querySelector('.card').onclick=e=>reveal(e.currentTarget,i);
-    $('table').appendChild(slot);
-  });
-  $('hint').textContent='แตะที่ไพ่เพื่อเปิดดูความหมาย';
+      </div>
+    </div>`;
 }
 
-/* ===================== เปิดไพ่ ===================== */
-function reveal(el,i){
-  if(el.classList.contains('flip')) return;
-  el.classList.add('flip');
-  const c=drawn[i];
-  setTimeout(()=>{
-    const d=document.createElement('div');
-    d.className='item';
-    d.innerHTML=`
-      <h3>${c.en}</h3>
-      <div class="m">${c.th} · ${c.rev?'กลับหัว (Reversed)':'ตั้งตรง (Upright)'}${count===3?' · '+POS3[i]:''}</div>
-      <p>${c.rev?c.rev_||c.rev===true?c[ 'rev' ]:'':''}</p>`;
-    // แสดงข้อความให้ถูกฟิลด์
-    d.querySelector('p').textContent = c.rev ? DECK[DECK.findIndex(x=>x.en===c.en)].rev : c.up;
-    $('result').appendChild(d);
-    if(document.querySelectorAll('.card.flip').length===count)
-      $('hint').textContent='กด “สับไพ่” เพื่อเริ่มใหม่';
-  },380);
+/* ===================== เปิดไพ่ทั้งหมด ===================== */
+function revealAll(){
+  picks.forEach((c,i)=>{
+    setTimeout(()=>{
+      $('card'+i).classList.add('flip');
+      setTimeout(()=>{
+        const d=document.createElement('div');
+        d.className='item';
+        d.innerHTML=`<h3>${c.en}</h3>
+          <div class="m">${c.th} · ${c.isRev?'กลับหัว (Reversed)':'ตั้งตรง (Upright)'}${count===3?' · '+POS3[i]:''}</div>
+          <p>${c.isRev?c.rev:c.up}</p>`;
+        $('result').appendChild(d);
+        if(i===picks.length-1) $('hint').textContent='กด “สับไพ่ใหม่” เพื่อดูอีกครั้ง';
+      },420);
+    },i*650);
+  });
 }
+
+start();
 </script>
 </body>
 </html>
