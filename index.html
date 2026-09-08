@@ -263,46 +263,52 @@ function mode(){
 }
 
 /* ===================== เริ่มรอบใหม่ ===================== */
-function start(){
-  busy=false; picks=[];
-  $('result').innerHTML='';
+function start() {
+  busy = false; 
+  picks = [];
+  $('result').innerHTML = '';
   $('fanwrap').classList.remove('hide');
 
-  // สับไพ่ Fisher-Yates + สุ่มหัวกลับล่วงหน้า
-  pool=[...DECK];
-  for(let i=pool.length-1;i>0;i--){
-    const j=Math.floor(Math.random()*(i+1));
-    [pool[i],pool[j]]=[pool[j],pool[i]];
+  // 1. สับไพ่และตั้งค่าสถานะกลับหัว
+  pool = [...DECK];
+  for (let i = pool.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [pool[i], pool[j]] = [pool[j], pool[i]];
   }
-  pool=pool.map(c=>({...c,isRev:Math.random()<REV_RATE}));
+  pool = pool.map(c => ({ ...c, isRev: Math.random() < REV_RATE }));
 
-  // ช่องว่างรอไพ่
-  $('table').innerHTML='';
-  for(let i=0;i<count;i++){
-    const s=document.createElement('div');
-    s.className='slot'; s.id='slot'+i;
-    s.innerHTML=`<div class="pos">${count===3?POS3[i]:''}</div>
-                 <div class="ph">?</div>`;
+  // 2. สร้างช่องว่างวางไพ่
+  $('table').innerHTML = '';
+  for (let i = 0; i < count; i++) {
+    const s = document.createElement('div');
+    s.className = 'slot';
+    s.id = 'slot' + i;
+    s.innerHTML = `<div class="pos">${count === 3 ? POS3[i] : ''}</div>
+                   <div class="ph">?</div>`;
     $('table').appendChild(s);
   }
-// แก้ไขส่วนการกางไพ่เดิมใน function start()
-    const fan = $('fan');
-    fan.innerHTML = '';
-    const n = DECK.length;
+
+  // 3. กางไพ่แบบกองตั้ง (Stack)
+  const fan = $('fan');
+  fan.innerHTML = '';
+  
+  pool.forEach((c, i) => {
+    const d = document.createElement('div');
+    d.className = 'fcard';
     
-    pool.forEach((c, i) => {
-      const d = document.createElement('div');
-      d.className = 'fcard';
-      
-      // จัดวางให้ซ้อนกันเหลื่อมๆ เล็กน้อย
-      d.style.left = (i * 2) + 'px'; // เหลื่อมขวา 2px
-      d.style.top = (i * 2) + 'px';  // เหลื่อมล่าง 2px
-      d.style.zIndex = i;            // ให้ใบหลังทับใบหน้า
-      
-      d.textContent = '✦';
-      d.onclick = () => pick(d, i);
-      fan.appendChild(d);
-    });
+    // จัดเรียงแบบซ้อนกันเหลื่อมๆ (Stack)
+    d.style.left = (i * 0.5) + 'px'; 
+    d.style.top = (i * 0.5) + 'px';
+    d.style.zIndex = i;
+    
+    d.textContent = '✦';
+    d.onclick = () => pick(d, i);
+    fan.appendChild(d);
+  });
+
+  updateCounter();
+  $('hint').textContent = 'เลือกไพ่จากกอง (เลื่อนเมาส์ผ่านเพื่อดูไพ่)';
+}
  
 
 function updateCounter(){
