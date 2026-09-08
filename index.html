@@ -285,21 +285,25 @@ function start(){
                  <div class="ph">?</div>`;
     $('table').appendChild(s);
   }
+// แก้ไขส่วนการกางไพ่เดิมใน function start()
+const fan = $('fan');
+fan.innerHTML = '';
+const n = DECK.length;
 
-  // กางพัด
- .fcard:hover {
-
-  transform: translateY(-20px) scale(1.05);
-
-  box-shadow: 0 10px 25px rgba(212,160,60,0.4);
-
-  z-index: 99 !important;
-
-}
-
-  updateCounter();
-  $('hint').textContent='แตะไพ่ในพัดเพื่อเลือก';
-}
+pool.forEach((c, i) => {
+  const d = document.createElement('div');
+  d.className = 'fcard';
+  
+  // จัดวางให้ซ้อนกันเหลื่อมๆ เล็กน้อย
+  d.style.left = (i * 2) + 'px'; // เหลื่อมขวา 2px
+  d.style.top = (i * 2) + 'px';  // เหลื่อมล่าง 2px
+  d.style.zIndex = i;            // ให้ใบหลังทับใบหน้า
+  
+  d.textContent = '✦';
+  d.onclick = () => pick(d, i);
+  fan.appendChild(d);
+});
+ 
 
 function updateCounter(){
   $('counter').textContent=`เลือกแล้ว ${picks.length} / ${count} ใบ`;
