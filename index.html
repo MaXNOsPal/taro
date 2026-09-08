@@ -64,25 +64,15 @@ button.on{background:linear-gradient(135deg,#d4a03c,#f0d089);color:#22143f;
 @keyframes drop{from{opacity:0;transform:translateY(-24px) scale(.94)}to{opacity:1}}
 
 /* ---------- พัดไพ่ ---------- */
-.fanwrap{width:100%;max-width:900px;transition:.5s}
-.fanwrap.hide{opacity:0;transform:translateY(40px) scale(.9);pointer-events:none;
-  height:0;overflow:hidden;margin:0}
-.fan{position:relative;height:250px;margin:6px 0 10px}
-.fcard{position:absolute;left:50%;top:0;width:var(--cw);height:var(--ch);
-  transform-origin:50% var(--orig);border-radius:9px;cursor:pointer;
-  border:1px solid #57429c;box-shadow:0 6px 18px rgba(0,0,0,.5);
-  background:repeating-linear-gradient(45deg,rgba(212,160,60,.13) 0 7px,transparent 7px 14px),
-    linear-gradient(160deg,#2b1c5c,#150c33);
-  display:flex;align-items:center;justify-content:center;
-  color:#d4a03c;font-size:24px;opacity:.92;
-  transform:translateX(-50%) rotate(var(--a));
-  transition:transform .28s ease,opacity .3s,box-shadow .28s;
-  animation:fanin .5s backwards}
+.fanwrap {position: relative;  width: 100%;  height: 320px;  display: flex;  justify-content: center;  align-items: center;  transition: .5s;}
+.fanwrap.hide{opacity:0;transform:translateY(40px) scale(.9);pointer-events:none;height:0;overflow:hidden;margin:0}
+.fan {position: relative;width: var(--cw);height: var(--ch);}
+.fcard {position: absolute;top: 0;left: 0;width: var(--cw);height: var(--ch);border-radius: 9px;cursor: pointer;border: 1px solid #57429c;box-shadow: 0 4px 10px rgba(0,0,0,0.5);background: linear-gradient(160deg,#2b1c5c,#150c33);
+  display: flex;align-items: center;justify-content: center;color: #d4a03c;font-size: 20px;transition: transform .3s ease, box-shadow .3s;}
 @keyframes fanin{
   from{opacity:0;transform:translateX(-50%) rotate(0deg) translateY(220px)}
   to{opacity:.92;transform:translateX(-50%) rotate(var(--a))}}
-.fcard:hover{opacity:1;box-shadow:0 12px 26px rgba(212,160,60,.4);
-  transform:translateX(-50%) rotate(var(--a)) translateY(-28px)}
+.fcard:hover {transform: translateY(-20px) scale(1.05);box-shadow: 0 10px 25px rgba(212,160,60,0.4);z-index: 99 !important;}
 .fcard.taken{opacity:0;pointer-events:none;
   transform:translateX(-50%) rotate(var(--a)) translateY(-60px) scale(.85)}
 .counter{text-align:center;font-size:13px;color:#c9a84c;letter-spacing:1px;margin-bottom:4px}
@@ -297,19 +287,15 @@ function start(){
   }
 
   // กางพัด
-  const fan=$('fan'); fan.innerHTML='';
-  const n=DECK.length, step=SPREAD/(n-1);
-  pool.forEach((c,i)=>{
-    const a=(-SPREAD/2+step*i).toFixed(2);
-    const d=document.createElement('div');
-    d.className='fcard';
-    d.style.setProperty('--a',a+'deg');
-    d.style.animationDelay=(i*32)+'ms';
-    d.style.zIndex=i;
-    d.textContent='✦';
-    d.onclick=()=>pick(d,i);
-    fan.appendChild(d);
-  });
+ .fcard:hover {
+
+  transform: translateY(-20px) scale(1.05);
+
+  box-shadow: 0 10px 25px rgba(212,160,60,0.4);
+
+  z-index: 99 !important;
+
+}
 
   updateCounter();
   $('hint').textContent='แตะไพ่ในพัดเพื่อเลือก';
