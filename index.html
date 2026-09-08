@@ -66,12 +66,21 @@ button.on{background:linear-gradient(135deg,#d4a03c,#f0d089);color:#22143f;
 /* ---------- พัดไพ่ ---------- */
 .fanwrap {position: relative;  width: 100%;  height: 320px;  display: flex;  justify-content: center;  align-items: center;  transition: .5s;}
 .fanwrap.hide{opacity:0;transform:translateY(40px) scale(.9);pointer-events:none;height:0;overflow:hidden;margin:0}
-.fan {position: relative;width: var(--cw);height: var(--ch);}
-.fcard {position: absolute;top: 0;left: 0;width: var(--cw);height: var(--ch);border-radius: 9px;cursor: pointer;border: 1px solid #57429c;box-shadow: 0 4px 10px rgba(0,0,0,0.5);background: linear-gradient(160deg,#2b1c5c,#150c33);
-  display: flex;align-items: center;justify-content: center;color: #d4a03c;font-size: 20px;transition: transform .3s ease, box-shadow .3s;}
-@keyframes fanin{
-  from{opacity:0;transform:translateX(-50%) rotate(0deg) translateY(220px)}
-  to{opacity:.92;transform:translateX(-50%) rotate(var(--a))}}
+.fan {
+  position: relative;
+  width: 100%; /* เปลี่ยนจาก width: var(--cw) เพื่อให้พื้นที่กว้างพอสำหรับสองกอง */
+  max-width: 600px;
+  height: 350px;
+  margin: 20px auto;
+}
+
+.fcard {
+  position: absolute;
+  /* นำ left ออกจาก CSS เพราะเรากำหนดผ่าน JS แล้ว */
+  width: var(--cw);
+  height: var(--ch);
+  /* ... ส่วนอื่นๆ คงเดิม ... */
+}
 .fcard:hover {transform: translateY(-20px) scale(1.05);box-shadow: 0 10px 25px rgba(212,160,60,0.4);z-index: 99 !important;}
 .fcard.taken{opacity:0;pointer-events:none;
   transform:translateX(-50%) rotate(var(--a)) translateY(-60px) scale(.85)}
@@ -288,27 +297,29 @@ function start() {
     $('table').appendChild(s);
   }
 
-  // 3. กางไพ่แบบกองตั้ง (Stack)
+  
+  // 3. กางไพ่แบ่งเป็นสองกอง (Stack Left & Right)
   const fan = $('fan');
   fan.innerHTML = '';
-  
+  const mid = Math.floor(pool.length / 2); // จุดแบ่งกลาง
+
   pool.forEach((c, i) => {
     const d = document.createElement('div');
     d.className = 'fcard';
     
-    // จัดเรียงแบบซ้อนกันเหลื่อมๆ (Stack)
-    d.style.left = (i * 0.5) + 'px'; 
-    d.style.top = (i * 0.5) + 'px';
+    // แบ่งตำแหน่งตาม index: ถ้า i < mid อยู่กองซ้าย, ถ้ามากกว่าอยู่กองขวา
+    const isLeft = i < mid;
+    const xOffset = isLeft ? -100 : 100; // ห่างจากจุดกลาง -100px หรือ +100px
+    const stackIndex = isLeft ? i : (i - mid);
+    
+    d.style.left = `calc(50% + ${xOffset + (stackIndex * 0.5)}px)`;
+    d.style.top = (stackIndex * 0.5) + 'px';
     d.style.zIndex = i;
     
     d.textContent = '✦';
     d.onclick = () => pick(d, i);
     fan.appendChild(d);
   });
-
-  updateCounter();
-  $('hint').textContent = 'เลือกไพ่จากกอง (เลื่อนเมาส์ผ่านเพื่อดูไพ่)';
-}
  
 
 function updateCounter(){
