@@ -7,7 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;500;600&family=Cinzel:wght@500;600&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--cw:108px;--ch:186px;--orig:400px}
+:root{--cw:100px;--ch:172px;--ov:26px}
 body{font-family:'Prompt',sans-serif;
   background:radial-gradient(ellipse at top,#1e1348,#09061a 60%);
   color:#efe9ff;min-height:100vh;padding:28px 14px 60px;
@@ -64,52 +64,83 @@ button.on{background:linear-gradient(135deg,#d4a03c,#f0d089);color:#22143f;
 @keyframes drop{from{opacity:0;transform:translateY(-24px) scale(.94)}to{opacity:1}}
 
 /* ---------- พัดไพ่ ---------- */
-.fanwrap {position: relative;  width: 100%;  height: 320px;  display: flex;  justify-content: center;  align-items: center;  transition: .5s;}
-.fanwrap.hide{opacity:0;transform:translateY(40px) scale(.9);pointer-events:none;height:0;overflow:hidden;margin:0}
-.fan {
-  position: relative;
-  width: 100%; /* เปลี่ยนจาก width: var(--cw) เพื่อให้พื้นที่กว้างพอสำหรับสองกอง */
-  max-width: 600px;
-  height: 350px;
-  margin: 20px auto;
-}
+.fanwrap{width:100%;display:block;transition:.5s;margin-bottom:10px}
 
-.fcard {
-  position: absolute;
-  /* นำ left ออกจาก CSS เพราะเรากำหนดผ่าน JS แล้ว */
-  width: var(--cw);
-  height: var(--ch);
-  /* ... ส่วนอื่นๆ คงเดิม ... */
-}
-.fcard:hover {transform: translateY(-20px) scale(1.05);box-shadow: 0 10px 25px rgba(212,160,60,0.4);z-index: 99 !important;}
-.fcard.taken{opacity:0;pointer-events:none;
-  transform:translateX(-50%) rotate(var(--a)) translateY(-60px) scale(.85)}
-.counter{text-align:center;font-size:13px;color:#c9a84c;letter-spacing:1px;margin-bottom:4px}
+.fanwrap.hide{opacity:0;transform:translateY(40px) scale(.92);
 
-/* การ์ดผีที่บินไปลงช่อง */
-.ghost{position:fixed;z-index:99;border-radius:10px;pointer-events:none;
-  border:1px solid #57429c;box-shadow:0 14px 34px rgba(0,0,0,.6);
-  background:repeating-linear-gradient(45deg,rgba(212,160,60,.13) 0 7px,transparent 7px 14px),
+  pointer-events:none;height:0;overflow:hidden;margin:0}
+
+
+/* คอนเทนเนอร์ 2 กอง */
+
+.fan{display:flex;gap:46px;flex-wrap:wrap;
+
+  justify-content:center;align-items:flex-start;padding:26px 0}
+
+
+.stack{position:relative;height:calc(var(--ch) + 26px)}
+
+
+.fcard{
+
+  position:absolute;top:24px;
+
+  width:var(--cw);height:var(--ch);
+
+  border-radius:9px;cursor:pointer;
+
+  border:1px solid #57429c;
+
+  box-shadow:-3px 6px 14px rgba(0,0,0,.55);
+
+  background:
+
+    repeating-linear-gradient(45deg,rgba(212,160,60,.13) 0 7px,transparent 7px 14px),
+
     linear-gradient(160deg,#2b1c5c,#150c33);
-  transition:all .6s cubic-bezier(.45,.05,.25,1)}
 
-/* ---------- คำทำนาย ---------- */
-.result{max-width:720px;width:100%;display:flex;flex-direction:column;gap:14px;margin-top:8px}
-.item{background:rgba(255,255,255,.045);border:1px solid #392a70;
-  border-left:3px solid #d4a03c;border-radius:12px;padding:15px 17px;
-  opacity:0;transform:translateY(14px);animation:up .5s forwards}
+  display:flex;align-items:center;justify-content:center;
+
+  color:#d4a03c;font-size:20px;
+
+  transition:transform .28s cubic-bezier(.34,1.3,.64,1),box-shadow .28s;
+
+}
+
+.fcard:hover{
+
+  transform:translateY(-26px) scale(1.04);
+
+  box-shadow:0 14px 28px rgba(212,160,60,.45);
+
+  border-color:#d4a03c;
+
+  z-index:999!important;
+
+}
+
+.fcard.taken{opacity:0;pointer-events:none;transform:translateY(-60px) scale(.85)}
+
+
+@media(max-width:720px){
+
+  :root{--cw:74px;--ch:127px;--ov:19px}
+
+  .fan{gap:20px}
+
+}
 @keyframes up{to{opacity:1;transform:none}}
 .item h3{font-family:'Cinzel',serif;font-size:16px;color:#ffe9a8}
 .item .m{font-size:12px;color:#9a8fc4;margin-bottom:8px}
 .item p{font-size:14px;line-height:1.75;color:#ded6ff}
 .hint{font-size:12px;color:#7e73ad;margin-top:14px;text-align:center}
 
-@media(max-width:640px){
-  :root{--cw:74px;--ch:127px;--orig:300px}
-  .fan{height:180px}
-  .slot,.ph,.card{width:130px}
-  .ph,.card{height:224px}
-  .table{gap:10px}
+@media(max-width:720px){
+
+  :root{--cw:74px;--ch:127px;--ov:19px}
+
+  .fan{gap:20px}
+
 }
 </style>
 </head>
@@ -272,55 +303,63 @@ function mode(){
 }
 
 /* ===================== เริ่มรอบใหม่ ===================== */
-function start() {
-  busy = false; 
-  picks = [];
-  $('result').innerHTML = '';
+function start(){
+  busy=false; picks=[];
+  $('result').innerHTML='';
   $('fanwrap').classList.remove('hide');
 
-  // 1. สับไพ่และตั้งค่าสถานะกลับหัว
-  pool = [...DECK];
-  for (let i = pool.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [pool[i], pool[j]] = [pool[j], pool[i]];
+  /* สับไพ่ */
+  pool=[...DECK];
+  for(let i=pool.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [pool[i],pool[j]]=[pool[j],pool[i]];
   }
-  pool = pool.map(c => ({ ...c, isRev: Math.random() < REV_RATE }));
+  pool=pool.map(c=>({...c,isRev:Math.random()<REV_RATE}));
 
-  // 2. สร้างช่องว่างวางไพ่
-  $('table').innerHTML = '';
-  for (let i = 0; i < count; i++) {
-    const s = document.createElement('div');
-    s.className = 'slot';
-    s.id = 'slot' + i;
-    s.innerHTML = `<div class="pos">${count === 3 ? POS3[i] : ''}</div>
-                   <div class="ph">?</div>`;
+  /* ช่องวางไพ่ */
+  $('table').innerHTML='';
+  for(let i=0;i<count;i++){
+    const s=document.createElement('div');
+    s.className='slot'; s.id='slot'+i;
+    s.innerHTML=`<div class="pos">${count===3?POS3[i]:''}</div>
+                 <div class="ph">?</div>`;
     $('table').appendChild(s);
   }
 
-  
-  // 3. กางไพ่แบ่งเป็นสองกอง (Stack Left & Right)
-  const fan = $('fan');
-  fan.innerHTML = '';
-  const mid = Math.floor(pool.length / 2); // จุดแบ่งกลาง
+  /* อ่านขนาดจาก CSS variable */
+  const cs=getComputedStyle(document.documentElement);
+  const CW=parseFloat(cs.getPropertyValue('--cw'));
+  const OV=parseFloat(cs.getPropertyValue('--ov'));
 
-  pool.forEach((c, i) => {
-    const d = document.createElement('div');
-    d.className = 'fcard';
-    
-    // แบ่งตำแหน่งตาม index: ถ้า i < mid อยู่กองซ้าย, ถ้ามากกว่าอยู่กองขวา
-    const isLeft = i < mid;
-    const xOffset = isLeft ? -100 : 100; // ห่างจากจุดกลาง -100px หรือ +100px
-    const stackIndex = isLeft ? i : (i - mid);
-    
-    d.style.left = `calc(50% + ${xOffset + (stackIndex * 0.5)}px)`;
-    d.style.top = (stackIndex * 0.5) + 'px';
-    d.style.zIndex = i;
-    
-    d.textContent = '✦';
-    d.onclick = () => pick(d, i);
-    fan.appendChild(d);
+  /* แบ่ง 2 กอง */
+  const fan=$('fan'); fan.innerHTML='';
+  const mid=Math.ceil(pool.length/2);
+  const groups=[pool.slice(0,mid), pool.slice(mid)];
+
+  groups.forEach((g,gi)=>{
+    const st=document.createElement('div');
+    st.className='stack';
+    st.style.width=((g.length-1)*OV + CW)+'px';
+
+    g.forEach((c,j)=>{
+      const idx=gi*mid+j;                 // index จริงใน pool
+      const d=document.createElement('div');
+      d.className='fcard';
+      d.style.left=(j*OV)+'px';
+      d.style.zIndex=j;
+      d.style.animationDelay=(idx*26)+'ms';
+      d.textContent='✦';
+      d.onclick=()=>pick(d,idx);
+      st.appendChild(d);
+    });
+    fan.appendChild(st);
   });
- 
+
+  updateCounter();
+  $('hint').textContent='เลือกไพ่จากกอง — เลื่อนเมาส์ผ่านเพื่อดึงไพ่ออกมา';
+}
+
+
 
 function updateCounter(){
   $('counter').textContent=`เลือกแล้ว ${picks.length} / ${count} ใบ`;
