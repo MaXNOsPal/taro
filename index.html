@@ -286,23 +286,23 @@ function start(){
     $('table').appendChild(s);
   }
 // แก้ไขส่วนการกางไพ่เดิมใน function start()
-const fan = $('fan');
-fan.innerHTML = '';
-const n = DECK.length;
-
-pool.forEach((c, i) => {
-  const d = document.createElement('div');
-  d.className = 'fcard';
-  
-  // จัดวางให้ซ้อนกันเหลื่อมๆ เล็กน้อย
-  d.style.left = (i * 2) + 'px'; // เหลื่อมขวา 2px
-  d.style.top = (i * 2) + 'px';  // เหลื่อมล่าง 2px
-  d.style.zIndex = i;            // ให้ใบหลังทับใบหน้า
-  
-  d.textContent = '✦';
-  d.onclick = () => pick(d, i);
-  fan.appendChild(d);
-});
+    const fan = $('fan');
+    fan.innerHTML = '';
+    const n = DECK.length;
+    
+    pool.forEach((c, i) => {
+      const d = document.createElement('div');
+      d.className = 'fcard';
+      
+      // จัดวางให้ซ้อนกันเหลื่อมๆ เล็กน้อย
+      d.style.left = (i * 2) + 'px'; // เหลื่อมขวา 2px
+      d.style.top = (i * 2) + 'px';  // เหลื่อมล่าง 2px
+      d.style.zIndex = i;            // ให้ใบหลังทับใบหน้า
+      
+      d.textContent = '✦';
+      d.onclick = () => pick(d, i);
+      fan.appendChild(d);
+    });
  
 
 function updateCounter(){
