@@ -42,11 +42,16 @@ button.on{background:linear-gradient(135deg,#d4a03c,#f0d089);color:#22143f;
 .card.flip .inner{transform:rotateY(180deg)}
 .face{position:absolute;inset:0;backface-visibility:hidden;border-radius:12px;
   overflow:hidden;border:1px solid #4a3a86;box-shadow:0 10px 30px rgba(0,0,0,.55)}
-.bk{background:
-  repeating-linear-gradient(45deg,rgba(212,160,60,.14) 0 8px,transparent 8px 16px),
-  linear-gradient(160deg,#2b1c5c,#150c33);
-  display:flex;align-items:center;justify-content:center}
-.bk span{font-size:38px;color:#d4a03c;opacity:.85}
+.bk{ background:#160d33;
+  display:flex;
+  align-items:center;
+  justify-content:center;}
+.bk img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
 .front{transform:rotateY(180deg);background:#160d33}
 .front .art{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s}
 .front.rev .art{transform:rotate(180deg)}
@@ -73,12 +78,12 @@ button.on{background:linear-gradient(135deg,#d4a03c,#f0d089);color:#22143f;
 
 /* คอนเทนเนอร์ 2 กอง */
 
-.fan{display:flex;gap:46px;flex-wrap:wrap;
+.fan{display:grid;grid-template-columns:minmax(0,1fr);gap:clamp(24px,5vw,46px);
 
-  justify-content:center;align-items:flex-start;padding:26px 0}
+  width:100%;max-width:calc(100vw - 28px);align-items:start;padding:26px 0}
 
 
-.stack{position:relative;height:calc(var(--ch) + 26px)}
+.stack{position:relative;width:100%;height:calc(var(--ch) + 26px);min-width:0}
 
 
 .fcard{
@@ -126,7 +131,7 @@ button.on{background:linear-gradient(135deg,#d4a03c,#f0d089);color:#22143f;
 
   :root{--cw:74px;--ch:127px;--ov:19px}
 
-  .fan{gap:20px}
+  .fan{gap:24px;padding-top:20px}
 
 }
 @keyframes up{to{opacity:1;transform:none}}
@@ -139,7 +144,7 @@ button.on{background:linear-gradient(135deg,#d4a03c,#f0d089);color:#22143f;
 
   :root{--cw:74px;--ch:127px;--ov:19px}
 
-  .fan{gap:20px}
+  .fan{gap:24px}
 
 }
 </style>
@@ -346,19 +351,21 @@ function start(){
 
   /* แบ่ง 2 กอง */
   const fan=$('fan'); fan.innerHTML='';
+  const stackWidth=fan.clientWidth;
   const mid=Math.ceil(pool.length/2);
   const groups=[pool.slice(0,mid), pool.slice(mid)];
 
   groups.forEach((g,gi)=>{
     const st=document.createElement('div');
     st.className='stack';
-    st.style.width=((g.length-1)*OV + CW)+'px';
+    const overlap=Math.max(0,Math.min(OV,(stackWidth-CW)/Math.max(1,g.length-1)));
+    st.style.width=stackWidth+'px';
 
     g.forEach((c,j)=>{
       const idx=gi*mid+j;                 // index จริงใน pool
       const d=document.createElement('div');
       d.className='fcard';
-      d.style.left=(j*OV)+'px';
+      d.style.left=(j*overlap)+'px';
       d.style.zIndex=j;
       d.style.animationDelay=(idx*26)+'ms';
       d.textContent='✦';
@@ -419,7 +426,9 @@ function place(i,c){
   slot.querySelector('.ph').outerHTML=`
     <div class="card drop" id="card${i}">
       <div class="inner">
-        <div class="face bk"><span>✦</span></div>
+        <div class="face bk">
+          <img src="cards/card-back.jpg" alt="ด้านหลังไพ่">
+        </div>
         <div class="face front ${c.isRev?'rev':''}">
           <img class="art" src="${c.img}" alt="${c.en}"
                onerror="this.outerHTML='<div class=\\'noimg\\'>✦</div>'">
